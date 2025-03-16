@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var relationship = RelationshipModel()
+    @AppStorage("isSetupComplete") private var isSetupComplete = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if isSetupComplete {
+            MainView()
+                .environmentObject(relationship)
+        } else {
+            SetupView(isSetupComplete: $isSetupComplete)
+                .environmentObject(relationship)
         }
-        .padding()
     }
 }
 
