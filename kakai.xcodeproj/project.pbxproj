@@ -21,6 +21,7 @@
 		10712A1D2D86BE5B00DCC449 /* KakaiWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A1C2D86BE5B00DCC449 /* KakaiWidget.swift */; };
 		10712A1F2D86BE5F00DCC449 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10712A1E2D86BE5F00DCC449 /* Assets.xcassets */; };
 		10712A232D86BE5F00DCC449 /* KakaiWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		10712A2E2D86D60900DCC449 /* SharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A2D2D86D60900DCC449 /* SharedModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		10712A202D86BE5F00DCC449 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10712A282D86BE9300DCC449 /* kakai.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kakai.entitlements; sourceTree = "<group>"; };
 		10712A292D86BEB900DCC449 /* KakaiWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KakaiWidgetExtension.entitlements; sourceTree = "<group>"; };
+		10712A2D2D86D60900DCC449 /* SharedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				10712A032D86B44600DCC449 /* SetupView.swift */,
 				10712A052D86B45200DCC449 /* RelationshipModel.swift */,
 				10712A072D86B74900DCC449 /* OnboardingView.swift */,
+				10712A2D2D86D60900DCC449 /* SharedModels.swift */,
 				107129F72D86B0C400DCC449 /* Assets.xcassets */,
 				107129F92D86B0C400DCC449 /* Preview Content */,
 			);
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10712A2E2D86D60900DCC449 /* SharedModels.swift in Sources */,
 				107129F62D86B0C000DCC449 /* ContentView.swift in Sources */,
 				10712A022D86B43B00DCC449 /* MainView.swift in Sources */,
 				10712A042D86B44600DCC449 /* SetupView.swift in Sources */,
