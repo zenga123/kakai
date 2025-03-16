@@ -137,6 +137,52 @@ struct SmallWidget: View {
     }
 }
 
+struct MeetingSmallWidget: View {
+    var entry: Provider.Entry
+    
+    var body: some View {
+        VStack(spacing: 5) {
+            Text("다음 만남까지")
+                .font(.caption)
+                .foregroundColor(.white)
+            
+            if let daysRemaining = entry.daysUntilNextMeeting {
+                Text("\(daysRemaining)")
+                    .font(.system(size: 42, weight: .bold))
+                    .foregroundColor(.white)
+                
+                Text("일 남음")
+                    .font(.caption)
+                    .foregroundColor(.white)
+            } else {
+                Text("미정")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.white)
+                
+                Text("날짜를 설정해주세요")
+                    .font(.caption)
+                    .foregroundColor(.white)
+            }
+            
+            Spacer()
+            
+            Text(entry.coupleNames)
+                .font(.caption2)
+                .foregroundColor(.white.opacity(0.9))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+        }
+        .padding()
+        .containerBackground(for: .widget) {
+            LinearGradient(
+                gradient: Gradient(colors: [Color.purple.opacity(0.7), Color.blue.opacity(0.7)]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+    }
+}
+
 struct MediumWidget: View {
     var entry: Provider.Entry
     
@@ -220,6 +266,19 @@ struct KakaiWidget: Widget {
     }
 }
 
+struct KakaiMeetingWidget: Widget {
+    let kind: String = "KakaiMeetingWidget"
+    
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            MeetingSmallWidget(entry: entry)
+        }
+        .configurationDisplayName("다음 만남")
+        .description("다음 만남까지 남은 일수만 확인하세요")
+        .supportedFamilies([.systemSmall])
+    }
+}
+
 struct KakaiWidget_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -238,6 +297,14 @@ struct KakaiWidget_Previews: PreviewProvider {
                 coupleNames: "지민 & 수지"
             ))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
+            
+            MeetingSmallWidget(entry: SimpleEntry(
+                date: Date(),
+                daysTogether: 100,
+                daysUntilNextMeeting: 7,
+                coupleNames: "지민 & 수지"
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
         }
     }
 }

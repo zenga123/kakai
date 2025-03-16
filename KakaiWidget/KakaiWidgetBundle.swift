@@ -12,5 +12,6 @@ import SwiftUI
 struct KakaiWidgetBundle: WidgetBundle {
     var body: some Widget {
         KakaiWidget()
+        KakaiMeetingWidget()
     }
 }

@@ -167,7 +167,7 @@ struct OnboardingView: View {
                                     }
                                 )) {
                                     ForEach(2000...2030, id: \.self) { year in
-                                        Text("\(year)년")
+                                        Text("\(String(year))년")
                                             .tag(year)
                                             .foregroundColor(.black)
                                             .font(.headline)
