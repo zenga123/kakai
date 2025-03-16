@@ -15,7 +15,37 @@
 		10712A042D86B44600DCC449 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A032D86B44600DCC449 /* SetupView.swift */; };
 		10712A062D86B45200DCC449 /* RelationshipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A052D86B45200DCC449 /* RelationshipModel.swift */; };
 		10712A082D86B74900DCC449 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A072D86B74900DCC449 /* OnboardingView.swift */; };
+		10712A142D86BE5B00DCC449 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10712A132D86BE5B00DCC449 /* WidgetKit.framework */; };
+		10712A162D86BE5B00DCC449 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10712A152D86BE5B00DCC449 /* SwiftUI.framework */; };
+		10712A192D86BE5B00DCC449 /* KakaiWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A182D86BE5B00DCC449 /* KakaiWidgetBundle.swift */; };
+		10712A1D2D86BE5B00DCC449 /* KakaiWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A1C2D86BE5B00DCC449 /* KakaiWidget.swift */; };
+		10712A1F2D86BE5F00DCC449 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10712A1E2D86BE5F00DCC449 /* Assets.xcassets */; };
+		10712A232D86BE5F00DCC449 /* KakaiWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		10712A212D86BE5F00DCC449 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 107129E82D86B0C000DCC449 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 10712A102D86BE5B00DCC449;
+			remoteInfo = KakaiWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		10712A272D86BE5F00DCC449 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				10712A232D86BE5F00DCC449 /* KakaiWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		107129F02D86B0C000DCC449 /* kakai.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kakai.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,6 +57,15 @@
 		10712A032D86B44600DCC449 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		10712A052D86B45200DCC449 /* RelationshipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipModel.swift; sourceTree = "<group>"; };
 		10712A072D86B74900DCC449 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KakaiWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		10712A132D86BE5B00DCC449 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		10712A152D86BE5B00DCC449 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		10712A182D86BE5B00DCC449 /* KakaiWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaiWidgetBundle.swift; sourceTree = "<group>"; };
+		10712A1C2D86BE5B00DCC449 /* KakaiWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaiWidget.swift; sourceTree = "<group>"; };
+		10712A1E2D86BE5F00DCC449 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		10712A202D86BE5F00DCC449 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10712A282D86BE9300DCC449 /* kakai.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kakai.entitlements; sourceTree = "<group>"; };
+		10712A292D86BEB900DCC449 /* KakaiWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KakaiWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,13 +76,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		10712A0E2D86BE5B00DCC449 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10712A162D86BE5B00DCC449 /* SwiftUI.framework in Frameworks */,
+				10712A142D86BE5B00DCC449 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		107129E72D86B0C000DCC449 = {
 			isa = PBXGroup;
 			children = (
+				10712A292D86BEB900DCC449 /* KakaiWidgetExtension.entitlements */,
 				107129F22D86B0C000DCC449 /* kakai */,
+				10712A172D86BE5B00DCC449 /* KakaiWidget */,
+				10712A122D86BE5B00DCC449 /* Frameworks */,
 				107129F12D86B0C000DCC449 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				107129F02D86B0C000DCC449 /* kakai.app */,
+				10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,6 +111,7 @@
 		107129F22D86B0C000DCC449 /* kakai */ = {
 			isa = PBXGroup;
 			children = (
+				10712A282D86BE9300DCC449 /* kakai.entitlements */,
 				107129F32D86B0C000DCC449 /* kakaiApp.swift */,
 				107129F52D86B0C000DCC449 /* ContentView.swift */,
 				10712A012D86B43B00DCC449 /* MainView.swift */,
@@ -79,6 +132,26 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		10712A122D86BE5B00DCC449 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				10712A132D86BE5B00DCC449 /* WidgetKit.framework */,
+				10712A152D86BE5B00DCC449 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		10712A172D86BE5B00DCC449 /* KakaiWidget */ = {
+			isa = PBXGroup;
+			children = (
+				10712A182D86BE5B00DCC449 /* KakaiWidgetBundle.swift */,
+				10712A1C2D86BE5B00DCC449 /* KakaiWidget.swift */,
+				10712A1E2D86BE5F00DCC449 /* Assets.xcassets */,
+				10712A202D86BE5F00DCC449 /* Info.plist */,
+			);
+			path = KakaiWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -89,15 +162,34 @@
 				107129EC2D86B0C000DCC449 /* Sources */,
 				107129ED2D86B0C000DCC449 /* Frameworks */,
 				107129EE2D86B0C000DCC449 /* Resources */,
+				10712A272D86BE5F00DCC449 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				10712A222D86BE5F00DCC449 /* PBXTargetDependency */,
 			);
 			name = kakai;
 			productName = kakai;
 			productReference = 107129F02D86B0C000DCC449 /* kakai.app */;
 			productType = "com.apple.product-type.application";
+		};
+		10712A102D86BE5B00DCC449 /* KakaiWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 10712A242D86BE5F00DCC449 /* Build configuration list for PBXNativeTarget "KakaiWidgetExtension" */;
+			buildPhases = (
+				10712A0D2D86BE5B00DCC449 /* Sources */,
+				10712A0E2D86BE5B00DCC449 /* Frameworks */,
+				10712A0F2D86BE5B00DCC449 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KakaiWidgetExtension;
+			productName = KakaiWidgetExtension;
+			productReference = 10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -110,6 +202,9 @@
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					107129EF2D86B0C000DCC449 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					10712A102D86BE5B00DCC449 = {
 						CreatedOnToolsVersion = 15.2;
 					};
 				};
@@ -128,6 +223,7 @@
 			projectRoot = "";
 			targets = (
 				107129EF2D86B0C000DCC449 /* kakai */,
+				10712A102D86BE5B00DCC449 /* KakaiWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -139,6 +235,14 @@
 			files = (
 				107129FB2D86B0C400DCC449 /* Preview Assets.xcassets in Resources */,
 				107129F82D86B0C400DCC449 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		10712A0F2D86BE5B00DCC449 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10712A1F2D86BE5F00DCC449 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +262,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		10712A0D2D86BE5B00DCC449 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10712A1D2D86BE5B00DCC449 /* KakaiWidget.swift in Sources */,
+				10712A192D86BE5B00DCC449 /* KakaiWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		10712A222D86BE5F00DCC449 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 10712A102D86BE5B00DCC449 /* KakaiWidgetExtension */;
+			targetProxy = 10712A212D86BE5F00DCC449 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		107129FC2D86B0C400DCC449 /* Debug */ = {
@@ -283,8 +404,10 @@
 		107129FF2D86B0C400DCC449 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = kakai/kakai.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kakai/Preview Content\"";
@@ -312,8 +435,10 @@
 		10712A002D86B0C400DCC449 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = kakai/kakai.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kakai/Preview Content\"";
@@ -338,6 +463,62 @@
 			};
 			name = Release;
 		};
+		10712A252D86BE5F00DCC449 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = KakaiWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CDS36TP26;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KakaiWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KakaiWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gaku.kakai.KakaiWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		10712A262D86BE5F00DCC449 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = KakaiWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CDS36TP26;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KakaiWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KakaiWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gaku.kakai.KakaiWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -355,6 +536,15 @@
 			buildConfigurations = (
 				107129FF2D86B0C400DCC449 /* Debug */,
 				10712A002D86B0C400DCC449 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		10712A242D86BE5F00DCC449 /* Build configuration list for PBXNativeTarget "KakaiWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10712A252D86BE5F00DCC449 /* Debug */,
+				10712A262D86BE5F00DCC449 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -301,6 +301,7 @@ struct OnboardingView: View {
         relationship.userName = userName
         relationship.partnerName = partnerName
         relationship.relationshipStartDate = startDate
+        relationship.saveData() // 데이터 저장
         isSetupComplete = true
     }
 }

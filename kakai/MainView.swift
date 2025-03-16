@@ -101,6 +101,7 @@ struct MainView: View {
                     
                     Button("저장") {
                         relationship.nextMeetingDate = selectedDate
+                        relationship.saveData() // 데이터 저장
                         showingDatePicker = false
                     }
                 }
