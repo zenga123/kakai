@@ -66,7 +66,17 @@ struct SetupView: View {
     }
     
     private func saveAndContinue() {
-        relationship.coupleNames = coupleNames
+        // 커플 이름에서 사용자 이름과 파트너 이름 추출 시도
+        let names = coupleNames.split(separator: "&").map { String($0.trimmingCharacters(in: .whitespaces)) }
+        if names.count >= 2 {
+            relationship.userName = names[0]
+            relationship.partnerName = names[1]
+        } else if !coupleNames.isEmpty {
+            // 구분자가 없는 경우 전체를 사용자 이름으로 설정
+            relationship.userName = coupleNames
+            relationship.partnerName = ""
+        }
+        
         relationship.relationshipStartDate = startDate
         isSetupComplete = true
     }

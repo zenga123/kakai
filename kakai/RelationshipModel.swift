@@ -8,9 +8,14 @@
 import Foundation
 
 class RelationshipModel: ObservableObject {
-    @Published var coupleNames: String = ""
+    @Published var userName: String = ""
+    @Published var partnerName: String = ""
     @Published var relationshipStartDate: Date = Date()
     @Published var nextMeetingDate: Date?
+    
+    var coupleNames: String {
+        return "\(userName) & \(partnerName)"
+    }
     
     var daysTogether: Int {
         let calendar = Calendar.current

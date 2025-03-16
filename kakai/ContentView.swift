@@ -16,7 +16,7 @@ struct ContentView: View {
             MainView()
                 .environmentObject(relationship)
         } else {
-            SetupView(isSetupComplete: $isSetupComplete)
+            OnboardingView(isSetupComplete: $isSetupComplete)
                 .environmentObject(relationship)
         }
     }

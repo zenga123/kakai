@@ -15,7 +15,7 @@ struct MainView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(relationship.coupleNames)
+                Text("\(relationship.userName) & \(relationship.partnerName)")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.pink)
