@@ -12,11 +12,6 @@ struct ContentView: View {
     @AppStorage("isSetupComplete") private var isSetupComplete = false
     
     var body: some View {
-        #if DEBUG
-        // In debug mode, always go to main view
-        MainView()
-            .environmentObject(relationship)
-        #else
         if isSetupComplete {
             MainView()
                 .environmentObject(relationship)
@@ -24,7 +19,6 @@ struct ContentView: View {
             OnboardingView(isSetupComplete: $isSetupComplete)
                 .environmentObject(relationship)
         }
-        #endif
     }
 }
 

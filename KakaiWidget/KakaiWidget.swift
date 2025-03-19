@@ -105,8 +105,19 @@ struct Provider: TimelineProvider {
             }
             
             if let nextMeetingDate = sharedDefaults.object(forKey: "nextMeeting") as? Date {
-                let components = Calendar.current.dateComponents([.day], from: Date(), to: nextMeetingDate)
-                daysUntilMeeting = components.day
+                // 다른 캘린더 날짜인지 확인
+                let calendar = Calendar.current
+                let today = calendar.startOfDay(for: Date())
+                let meetingDay = calendar.startOfDay(for: nextMeetingDate)
+                
+                if today == meetingDay {
+                    // 오늘이면 0일
+                    daysUntilMeeting = 0
+                } else {
+                    // 다른 날짜라면 날짜 차이 계산
+                    let components = calendar.dateComponents([.day], from: today, to: meetingDay)
+                    daysUntilMeeting = max(1, components.day ?? 0) // 최소 1일
+                }
             }
             
             // 위젯용 미팅 데이터 가져오기 (간소화된 버전)

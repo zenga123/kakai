@@ -64,7 +64,7 @@ struct MainView: View {
             .padding(.top, 20)
             
             if let upcomingMeeting = relationship.upcomingMeeting,
-               let daysUntil = Calendar.current.dateComponents([.day], from: Date(), to: upcomingMeeting.startDate).day {
+               let daysUntil = Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: Date()), to: Calendar.current.startOfDay(for: upcomingMeeting.startDate)).day {
                 
                 VStack(spacing: 15) {
                     Text("다음 만남")
@@ -120,43 +120,34 @@ struct MainView: View {
                     .padding(.top, 5)
                 }
                 .padding()
-                .background(Color.pink.opacity(0.1))
+                .background(Color.pink.opacity(0.2))
                 .cornerRadius(15)
                 .padding(.top, 30)
                 
             } else {
-                Button(action: {
-                    showingMeetingSheet = true
-                }) {
-                    HStack {
-                        Image(systemName: "calendar.badge.plus")
-                        Text("다음 만남 추가하기")
-                    }
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .cornerRadius(10)
-                }
-                .padding(.top, 40)
+                // 다음 만남 추가하기 버튼 제거됨
             }
             
             Spacer()
             
-            Button(action: {
-                showingMeetingSheet = true
-            }) {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("새 만남 추가")
+            // 예정된 만남이 없을 때만 새 만남 추가 버튼 표시
+            if relationship.upcomingMeeting == nil {
+                Button(action: {
+                    showingMeetingSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                        Text("새 만남 추가")
+                    }
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 20)
+                    .background(Color.pink)
+                    .foregroundColor(.white)
+                    .cornerRadius(25)
+                    .shadow(color: .pink.opacity(0.3), radius: 5, x: 0, y: 2)
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 20)
-                .background(Color.pink)
-                .foregroundColor(.white)
-                .cornerRadius(25)
-                .shadow(color: .pink.opacity(0.3), radius: 5, x: 0, y: 2)
+                .padding(.bottom, 20)
             }
-            .padding(.bottom, 20)
         }
         .padding()
         .sheet(isPresented: $showingMeetingSheet) {
@@ -175,6 +166,7 @@ struct MainView: View {
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "ko-KR")
         return formatter.string(from: date)
     }
 }
@@ -196,11 +188,15 @@ struct AddMeetingView: View {
                     TextField("제목", text: $title)
                     
                     DatePicker("시작일", selection: $startDate, in: Date()..., displayedComponents: .date)
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
                     
-                    Toggle("기간 만남", isOn: $isRangeSelection)
+                    Toggle("종료일 추가", isOn: $isRangeSelection)
                     
                     if isRangeSelection {
                         DatePicker("종료일", selection: $endDate, in: startDate..., displayedComponents: .date)
+                            .environment(\.locale, Locale(identifier: "ko_KR"))
+                            .environment(\.locale, Locale(identifier: "ko_KR"))
                         
                         if let nights = calculateNights(), let days = calculateDays() {
                             HStack {
@@ -384,6 +380,7 @@ struct MeetingDetailView: View {
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "ko-KR")
         return formatter.string(from: date)
     }
 }
@@ -467,6 +464,7 @@ struct MeetingRowView: View {
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
+        formatter.locale = Locale(identifier: "ko-KR")
         return formatter.string(from: date)
     }
 }
