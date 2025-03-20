@@ -22,6 +22,7 @@ enum ActiveSheet: Identifiable {
 struct SimpleMeetingDetailView: View {
     @ObservedObject var relationship: RelationshipModel
     let meeting: Meeting
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     var body: some View {
         ScrollView {
@@ -43,7 +44,7 @@ struct SimpleMeetingDetailView: View {
                         Text("기간: \(durationText)")
                             .padding(.vertical, 4)
                             .padding(.horizontal, 8)
-                            .background(Color.pink.opacity(0.2))
+                            .background(                            isDarkMode ? Color.pink.opacity(0.4) : Color.pink.opacity(0.2))
                             .cornerRadius(8)
                     }
                 }
@@ -391,6 +392,7 @@ struct PlanEditorView: View {
 
 struct MainView: View {
     @EnvironmentObject var relationship: RelationshipModel
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var showingMeetingSheet = false
     @State private var newMeetingTitle = ""
     @State private var newMeetingStartDate = Date()
@@ -409,14 +411,29 @@ struct MainView: View {
                     .foregroundColor(.pink)
                 Spacer()
                 
-                Button(action: {
-                    activeSheet = .history
-                }) {
-                    Image(systemName: "clock.arrow.circlepath")
-                        .font(.headline)
-                        .foregroundColor(.pink)
-                }
-            }
+                HStack(spacing: 20) {
+                    Button(action: {
+                        themeManager.isDarkMode.toggle()
+                    }) {
+                        Image(systemName: themeManager.isDarkMode ? "sun.max.fill" : "moon.fill")
+                            .font(.system(size: 22))
+                            .foregroundColor(.pink)
+                            .frame(width: 44, height: 44)
+                            .background(Color.pink.opacity(0.15))
+                            .clipShape(Circle())
+                    }
+                    
+                    Button(action: {
+                        activeSheet = .history
+                    }) {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: 22))
+                            .foregroundColor(.pink)
+                            .frame(width: 44, height: 44)
+                            .background(Color.pink.opacity(0.15))
+                            .clipShape(Circle())
+                    }
+                }            }
             .padding(.horizontal, 20)
             .padding(.top, 20)
             
@@ -531,6 +548,7 @@ struct MainView: View {
         .sheet(isPresented: $showingMeetingSheet) {
             AddMeetingView(relationship: relationship, isPresented: $showingMeetingSheet)
         }
+        .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
         .sheet(item: $activeSheet) { item in
             switch item {
             case .history:
@@ -1218,11 +1236,12 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-// 만남 상세 정보 콘텐츠 뷰
 struct MeetingDetailContentView: View {
     @ObservedObject var relationship: RelationshipModel
     let meeting: Meeting
     @State private var showingPlanEditor = false
+    @State private var isEditingPlans = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     // 계획 내용에 따라 적절한 이모지 반환
     private func planEmoji(for plan: String) -> String {
@@ -1244,6 +1263,32 @@ struct MeetingDetailContentView: View {
             return "✈️ 여행"
         } else {
             return "📝 계획"
+        }
+    }
+    
+    // 계획 삭제 함수
+    private func removePlan(at index: Int) {
+        guard let memo = meeting.memo, !memo.isEmpty else { return }
+        
+        let separator = "|||PLAN_SEPARATOR|||"
+        var plans = memo.components(separatedBy: separator)
+        
+        // 선택된 인덱스의 계획 삭제
+        if index < plans.count {
+            plans.remove(at: index)
+            
+            // 업데이트된 meeting 생성
+            var updatedMeeting = meeting
+            
+            // 계획이 남아 있으면 다시 조합하여 저장, 없으면 nil로 설정
+            if !plans.isEmpty {
+                updatedMeeting.memo = plans.joined(separator: separator)
+            } else {
+                updatedMeeting.memo = nil
+            }
+            
+            // 관계 모델 업데이트
+            relationship.updateMeeting(updatedMeeting)
         }
     }
     
@@ -1351,6 +1396,13 @@ struct MeetingDetailContentView: View {
                         
                         Spacer()
                         
+                        Button(action: {
+                            isEditingPlans.toggle()
+                        }) {
+                            Text(isEditingPlans ? "완료" : "편집")
+                                .font(.subheadline)
+                                .foregroundColor(.blue)
+                        }
                     }
                     
                     // 기존 메모 표시 - 계획 카드로 분리하여 표시
@@ -1361,27 +1413,43 @@ struct MeetingDetailContentView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 ForEach(plans.indices, id: \.self) { index in
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        HStack {
-                                            Image(systemName: "\(index + 1).circle.fill")
-                                                .foregroundColor(.pink)
+                                    ZStack(alignment: .topTrailing) {
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            HStack {
+                                                Image(systemName: "\(index + 1).circle.fill")
+                                                    .foregroundColor(.pink)
+                                                
+                                                Text(planEmoji(for: plans[index]))
+                                                    .font(.headline)
+                                            }
                                             
-                                            Text(planEmoji(for: plans[index]))
-                                                .font(.headline)
+                                            Text(plans[index])
+                                                .font(.body)
+                                                .foregroundColor(.black)
+                                                .padding(.leading, 6)
                                         }
+                                        .padding()
+                                        .frame(width: 120, height: 120)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(Color.white)
+                                                .shadow(color: .gray.opacity(0.2), radius: 3, x: 0, y: 2)
+                                        )
                                         
-                                        Text(plans[index])
-                                            .font(.body)
-                                            .foregroundColor(.black)
-                                            .padding(.leading, 6)
+                                        // 편집 모드일 때만 삭제 버튼 표시
+                                        if isEditingPlans {
+                                            Button(action: {
+                                                removePlan(at: index)
+                                            }) {
+                                                Image(systemName: "minus.circle.fill")
+                                                    .font(.system(size: 22))
+                                                    .foregroundColor(.red)
+                                                    .background(Color.white)
+                                                    .clipShape(Circle())
+                                            }
+                                            .offset(x: -4, y: 4)
+                                        }
                                     }
-                                    .padding()
-                                    .frame(width: 100, height: 100)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(Color.white)
-                                            .shadow(color: .gray.opacity(0.2), radius: 3, x: 0, y: 2)
-                                    )
                                 }
                             }
                             .padding(.horizontal, 4)

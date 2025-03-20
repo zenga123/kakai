@@ -23,6 +23,7 @@
 		10712A232D86BE5F00DCC449 /* KakaiWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 10712A112D86BE5B00DCC449 /* KakaiWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		10712A2E2D86D60900DCC449 /* SharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10712A2D2D86D60900DCC449 /* SharedModels.swift */; };
 		108DCF8E2D8AF0710085C1C5 /* EnhancedCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108DCF8D2D8AF0710085C1C5 /* EnhancedCalendarView.swift */; };
+		10F162662D8C3E8300F521C3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F162652D8C3E8300F521C3 /* ThemeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		10712A292D86BEB900DCC449 /* KakaiWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KakaiWidgetExtension.entitlements; sourceTree = "<group>"; };
 		10712A2D2D86D60900DCC449 /* SharedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModels.swift; sourceTree = "<group>"; };
 		108DCF8D2D8AF0710085C1C5 /* EnhancedCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedCalendarView.swift; sourceTree = "<group>"; };
+		10F162652D8C3E8300F521C3 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				10712A282D86BE9300DCC449 /* kakai.entitlements */,
 				107129F32D86B0C000DCC449 /* kakaiApp.swift */,
 				107129F52D86B0C000DCC449 /* ContentView.swift */,
+				10F162652D8C3E8300F521C3 /* ThemeManager.swift */,
 				10712A012D86B43B00DCC449 /* MainView.swift */,
 				108DCF8D2D8AF0710085C1C5 /* EnhancedCalendarView.swift */,
 				10712A032D86B44600DCC449 /* SetupView.swift */,
@@ -264,6 +267,7 @@
 				107129F62D86B0C000DCC449 /* ContentView.swift in Sources */,
 				10712A022D86B43B00DCC449 /* MainView.swift in Sources */,
 				10712A042D86B44600DCC449 /* SetupView.swift in Sources */,
+				10F162662D8C3E8300F521C3 /* ThemeManager.swift in Sources */,
 				10712A082D86B74900DCC449 /* OnboardingView.swift in Sources */,
 				10712A062D86B45200DCC449 /* RelationshipModel.swift in Sources */,
 				107129F42D86B0C000DCC449 /* kakaiApp.swift in Sources */,
