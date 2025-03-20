@@ -1224,6 +1224,29 @@ struct MeetingDetailContentView: View {
     let meeting: Meeting
     @State private var showingPlanEditor = false
     
+    // 계획 내용에 따라 적절한 이모지 반환
+    private func planEmoji(for plan: String) -> String {
+        let planLowercase = plan.lowercased()
+        
+        if planLowercase.contains("공부") || planLowercase.contains("study") {
+            return "📚 공부"
+        } else if planLowercase.contains("영화") || planLowercase.contains("movie") {
+            return "🎬 영화"
+        } else if planLowercase.contains("식사") || planLowercase.contains("밥") || planLowercase.contains("먹") || planLowercase.contains("food") || planLowercase.contains("eat") {
+            return "🍽️ 식사"
+        } else if planLowercase.contains("카페") || planLowercase.contains("커피") || planLowercase.contains("cafe") || planLowercase.contains("coffee") {
+            return "☕️ 카페"
+        } else if planLowercase.contains("쇼핑") || planLowercase.contains("shopping") {
+            return "🛍️ 쇼핑"
+        } else if planLowercase.contains("산책") || planLowercase.contains("walk") {
+            return "🚶 산책"
+        } else if planLowercase.contains("여행") || planLowercase.contains("travel") || planLowercase.contains("trip") {
+            return "✈️ 여행"
+        } else {
+            return "📝 계획"
+        }
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -1330,16 +1353,40 @@ struct MeetingDetailContentView: View {
                         
                     }
                     
-                    // 기존 메모 표시
+                    // 기존 메모 표시 - 계획 카드로 분리하여 표시
                     if let memo = meeting.memo, !memo.isEmpty {
-                        Text(memo)
-                            .foregroundColor(.black)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.white)
-                                    .shadow(color: .gray.opacity(0.1), radius: 3, x: 0, y: 1)
-                            )
+                        let separator = "|||PLAN_SEPARATOR|||"
+                        let plans = memo.components(separatedBy: separator)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 12) {
+                                ForEach(plans.indices, id: \.self) { index in
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        HStack {
+                                            Image(systemName: "\(index + 1).circle.fill")
+                                                .foregroundColor(.pink)
+                                            
+                                            Text(planEmoji(for: plans[index]))
+                                                .font(.headline)
+                                        }
+                                        
+                                        Text(plans[index])
+                                            .font(.body)
+                                            .foregroundColor(.black)
+                                            .padding(.leading, 6)
+                                    }
+                                    .padding()
+                                    .frame(width: 100, height: 100)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color.white)
+                                            .shadow(color: .gray.opacity(0.2), radius: 3, x: 0, y: 2)
+                                    )
+                                }
+                            }
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 8)
+                        }
                     } else {
                         VStack(spacing: 10) {
                             Image(systemName: "square.and.pencil")
