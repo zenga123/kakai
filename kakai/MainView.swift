@@ -153,173 +153,175 @@ struct PlanEditorView: View {
                 )
                 .edgesIgnoringSafeArea(.all)
                 
-                VStack(spacing: 20) {
-                    // 상단 제목
-                    Text("계획 작성")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .padding(.top, 15)
-                    // 상단 정보 카드
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Image(systemName: "calendar.badge.clock")
-                                .font(.title2)
-                                .foregroundColor(.pink)
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // 상단 제목
+                        Text("계획 작성")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
+                            .padding(.top, 15)
+                        // 상단 정보 카드
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Image(systemName: "calendar.badge.clock")
+                                    .font(.title2)
+                                    .foregroundColor(.pink)
+                                
+                                Text(meeting.title)
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                            }
                             
-                            Text(meeting.title)
-                                .font(.title3)
-                                .fontWeight(.bold)
+                            HStack {
+                                Text("날짜: \(formatDate(meeting.startDate))")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                
+                                if let endDate = meeting.endDate {
+                                    Text("~ \(formatDate(endDate))")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            
+                            if let durationText = meeting.durationText {
+                                Text(durationText)
+                                    .font(.footnote)
+                                    .padding(.vertical, 2)
+                                    .padding(.horizontal, 8)
+                                    .background(Color.pink.opacity(0.2))
+                                    .cornerRadius(4)
+                                    .foregroundColor(.pink)
+                            }
                         }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.white)
+                                .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+                        )
+                        .padding(.horizontal)
                         
-                        HStack {
-                            Text("날짜: \(formatDate(meeting.startDate))")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+                            // 기존 계획 미리보기 (있는 경우)
+                            if let existingMemo = meeting.memo, !existingMemo.isEmpty {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("기존 계획")
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
+                                        .padding(.horizontal)
+                                    
+                                    // 메모를 구분자로 분리하여 각각 카드로 표시
+                                    let separator = "|||PLAN_SEPARATOR|||"
+                                    let plans = existingMemo.components(separatedBy: separator)
+                                    
+                                    ForEach(plans.indices, id: \.self) { index in
+                                        PlanCardView(plan: plans[index], index: index + 1)
+                                    }
+                                }
+                            }
+                        
+                        // 설명 텍스트
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("새 계획 추가")
+                                .font(.headline)
+                                .foregroundColor(.primary)
                             
-                            if let endDate = meeting.endDate {
-                                Text("~ \(formatDate(endDate))")
+                            if let existingMemo = meeting.memo, !existingMemo.isEmpty {
+                                Text("새로운 계획이 별도의 항목으로 추가됩니다.")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            } else {
+                                Text("만남에 대한 계획이나 아이디어를 작성해보세요.")
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
                         
-                        if let durationText = meeting.durationText {
-                            Text(durationText)
-                                .font(.footnote)
-                                .padding(.vertical, 2)
-                                .padding(.horizontal, 8)
-                                .background(Color.pink.opacity(0.2))
-                                .cornerRadius(4)
-                                .foregroundColor(.pink)
+                        // 텍스트 에디터
+                        ZStack(alignment: .topLeading) {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.white)
+                                )
+                            
+                            if memoText.isEmpty && !isTextFieldFocused {
+                                Text("새 계획을 입력하세요...")
+                                    .foregroundColor(Color.gray.opacity(0.7))
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                            }
+                            
+                            TextEditor(text: $memoText)
+                                .focused($isTextFieldFocused)
+                                .padding(8)
+                                .scrollContentBackground(.hidden)
+                                .background(Color.clear)
+                                .cornerRadius(8)
+                                .frame(minHeight: 200)
+                                .foregroundColor(.black) // 텍스트 색상을 검정색으로 명시적 지정
                         }
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.white)
-                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
-                    )
-                    .padding(.horizontal)
-                    
-                        // 기존 계획 미리보기 (있는 경우)
-                        if let existingMemo = meeting.memo, !existingMemo.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("기존 계획")
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
-                                    .padding(.horizontal)
-                                
-                                // 메모를 구분자로 분리하여 각각 카드로 표시
-                                let separator = "|||PLAN_SEPARATOR|||"
-                                let plans = existingMemo.components(separatedBy: separator)
-                                
-                                ForEach(plans.indices, id: \.self) { index in
-                                    PlanCardView(plan: plans[index], index: index + 1)
+                        .padding(.horizontal)
+                        
+                        // 아이디어 제안
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("어떤 계획을 세워볼까요?")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(.primary)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    suggestionButton("🍽 맛집 탐방")
+                                    suggestionButton("🎬 영화 관람")
+                                    suggestionButton("☕️ 카페 데이트")
+                                    suggestionButton("🚶‍♀️ 산책하기")
+                                    suggestionButton("🛍 쇼핑하기")
                                 }
                             }
                         }
-                    
-                    // 설명 텍스트
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("새 계획 추가")
-                            .font(.headline)
-                            .foregroundColor(.primary)
+                        .padding(.horizontal)
                         
-                        if let existingMemo = meeting.memo, !existingMemo.isEmpty {
-                            Text("새로운 계획이 별도의 항목으로 추가됩니다.")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        } else {
-                            Text("만남에 대한 계획이나 아이디어를 작성해보세요.")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-                    
-                    // 텍스트 에디터
-                    ZStack(alignment: .topLeading) {
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.white)
-                            )
+                        Spacer()
                         
-                        if memoText.isEmpty && !isTextFieldFocused {
-                            Text("새 계획을 입력하세요...")
-                                .foregroundColor(Color.gray.opacity(0.7))
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 12)
-                        }
-                        
-                        TextEditor(text: $memoText)
-                            .focused($isTextFieldFocused)
-                            .padding(8)
-                            .scrollContentBackground(.hidden)
-                            .background(Color.clear)
-                            .cornerRadius(8)
-                            .frame(minHeight: 200)
-                            .foregroundColor(.black) // 텍스트 색상을 검정색으로 명시적 지정
-                    }
-                    .padding(.horizontal)
-                    
-                    // 아이디어 제안
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("어떤 계획을 세워볼까요?")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.primary)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 10) {
-                                suggestionButton("🍽 맛집 탐방")
-                                suggestionButton("🎬 영화 관람")
-                                suggestionButton("☕️ 카페 데이트")
-                                suggestionButton("🚶‍♀️ 산책하기")
-                                suggestionButton("🛍 쇼핑하기")
+                        // 저장/취소 버튼
+                        HStack(spacing: 15) {
+                            Button(action: {
+                                presentationMode.wrappedValue.dismiss()
+                            }) {
+                                Text("취소")
+                                    .fontWeight(.medium)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 15)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.pink, lineWidth: 1)
+                                    )
+                                    .foregroundColor(.pink)
+                            }
+                            
+                            Button(action: {
+                                savePlan()
+                                presentationMode.wrappedValue.dismiss()
+                            }) {
+                                Text("저장")
+                                    .fontWeight(.medium)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 15)
+                                    .background(Color.pink)
+                                    .cornerRadius(12)
+                                    .foregroundColor(.white)
                             }
                         }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
                     }
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                    
-                    // 저장/취소 버튼
-                    HStack(spacing: 15) {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Text("취소")
-                                .fontWeight(.medium)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 15)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.pink, lineWidth: 1)
-                                )
-                                .foregroundColor(.pink)
-                        }
-                        
-                        Button(action: {
-                            savePlan()
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Text("저장")
-                                .fontWeight(.medium)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 15)
-                                .background(Color.pink)
-                                .cornerRadius(12)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
+                    .padding(.top, 10)
                 }
-                .padding(.top, 10)
             }
             // .navigationBarTitle("계획 작성", displayMode: .inline) // 네비게이션 타이틀 제거
             .navigationBarItems(
