@@ -324,13 +324,6 @@ struct MainView: View {
                                         
                                         Spacer()
                                         
-                                        Button(action: {
-                                            // 계획 편집 기능
-                                        }) {
-                                            Text("편집")
-                                                .font(.subheadline)
-                                                .foregroundColor(.blue)
-                                        }
                                     }
 
                                     if let memo = upcomingMeeting.memo, !memo.isEmpty {
@@ -348,7 +341,7 @@ struct MainView: View {
                                                 .font(.system(size: 32))
                                                 .foregroundColor(.gray.opacity(0.6))
                                             
-                                            Text("아직 계획이 없습니다. 편집 버튼을 눌러 계획을 작성해보세요.")
+                                            Text("아직 계획이 없습니다. 새 계획 추가 버튼을 눌러 계획을 작성해보세요.")
                                                 .multilineTextAlignment(.center)
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
@@ -680,7 +673,7 @@ struct MeetingDetailView: View {
                             .cornerRadius(8)
                     } else {
                         if planText.isEmpty {
-                            Text("아직 계획이 없습니다. 편집 버튼을 눌러 계획을 작성해보세요.")
+                            Text("아직 계획이 없습니다. 새 계획 추가 버튼을 눌러 계획을 작성해보세요.")
                                 .foregroundColor(.gray)
                                 .italic()
                                 .padding()
