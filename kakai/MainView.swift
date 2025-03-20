@@ -8,6 +8,63 @@
 import SwiftUI
 import PhotosUI
 
+// 새로 추가된 간소화된 MeetingDetailView
+struct SimpleMeetingDetailView: View {
+    @ObservedObject var relationship: RelationshipModel
+    let meeting: Meeting
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // 제목
+                Text(meeting.title)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+                // 날짜 정보
+                VStack(alignment: .leading) {
+                    Text("시작일: \(formatDate(meeting.startDate))")
+                    
+                    if let endDate = meeting.endDate {
+                        Text("종료일: \(formatDate(endDate))")
+                    }
+                    
+                    if let durationText = meeting.durationText {
+                        Text("기간: \(durationText)")
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(Color.pink.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                }
+                
+                // 메모
+                if let memo = meeting.memo, !memo.isEmpty {
+                    VStack(alignment: .leading) {
+                        Text("메모")
+                            .font(.headline)
+                        
+                        Text(memo)
+                            .padding()
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                }
+                
+                Spacer()
+            }
+            .padding()
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "ko_KR")
+        return formatter.string(from: date)
+    }
+}
+
 struct MainView: View {
     @EnvironmentObject var relationship: RelationshipModel
     @State private var showingMeetingSheet = false
@@ -106,7 +163,6 @@ struct MainView: View {
                     }
                     
                     Button(action: {
-                        selectedMeeting = upcomingMeeting
                         showingMeetingDetail = true
                     }) {
                         Text("자세히 보기")
@@ -117,8 +173,7 @@ struct MainView: View {
                             .background(Color.pink)
                             .cornerRadius(20)
                     }
-                    .padding(.top, 5)
-                }
+                    .padding(.top, 5)                }
                 .padding()
                 .background(Color.pink.opacity(0.2))
                 .cornerRadius(15)
@@ -157,9 +212,226 @@ struct MainView: View {
             MeetingHistoryView(relationship: relationship)
         }
         .sheet(isPresented: $showingMeetingDetail) {
-            if let meeting = selectedMeeting {
-                MeetingDetailView(relationship: relationship, meeting: meeting)
+            NavigationView {
+                ZStack {
+                    // 배경 그라데이션
+                    LinearGradient(gradient: Gradient(colors: [Color.white, Color.pink.opacity(0.1)]),
+                                 startPoint: .top,
+                                 endPoint: .bottom)
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    if let upcomingMeeting = relationship.upcomingMeeting {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 20) {
+                                // 헤더 섹션 - 제목과 날짜 요약
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(upcomingMeeting.title)
+                                        .font(.system(size: 28, weight: .bold))
+                                        .foregroundColor(.black)
+                                    
+                                    HStack {
+                                        Image(systemName: "calendar")
+                                            .foregroundColor(.pink)
+                                        
+                                        Text(formatDate(upcomingMeeting.startDate))
+                                            .foregroundColor(.black)
+
+                                        if let endDate = upcomingMeeting.endDate {
+                                            Text("~")
+                                                .foregroundColor(.gray)
+                                            Text(formatDate(endDate))
+                                                .foregroundColor(.black)
+                                        }
+                                    }
+
+                                    if let durationText = upcomingMeeting.durationText {
+                                        HStack {
+                                            Image(systemName: "clock.fill")
+                                                .foregroundColor(.pink)
+                                            
+                                            Text(durationText)
+                                                .font(.subheadline)
+                                                .foregroundColor(.black)
+                                                .padding(.vertical, 4)
+                                                .padding(.horizontal, 8)
+                                                .background(Color.pink.opacity(0.2))
+                                                .cornerRadius(8)
+                                        }
+                                    }
+                                }
+                                .padding(.top, 10)
+                                .padding(.bottom, 5)
+                                
+                                // 타이머 섹션 - D-day 카운트다운
+                                if upcomingMeeting.startDate > Date() {
+                                    let daysUntil = Calendar.current.dateComponents([.day], from: Date(), to: upcomingMeeting.startDate).day ?? 0
+                                    
+                                    VStack(spacing: 0) {
+                                        Text("만남까지")
+                                            .font(.system(size: 16))
+                                            .foregroundColor(.gray)
+                                        
+                                        HStack(alignment: .lastTextBaseline, spacing: 4) {
+                                            Text("\(daysUntil)")
+                                                .font(.system(size: 42, weight: .heavy))
+                                                .foregroundColor(.pink)
+                                            
+                                            Text("일")
+                                                .font(.system(size: 26, weight: .medium))
+                                                .foregroundColor(.gray)
+                                                .padding(.leading, 4)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(Color.white)
+                                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+                                    )
+                                    .padding(.vertical, 10)
+                                }
+
+                                // 달력 섹션
+                                VStack(alignment: .leading, spacing: 10) {
+                                    HStack {
+                                        Text("일정")
+                                            .font(.headline)
+                                            .foregroundColor(.black)
+                                        
+                                        Spacer()
+                                    }
+                                    
+                                    // 분리된 EnhancedCalendarView 사용
+                                                                        EnhancedCalendarView(startDate: upcomingMeeting.startDate, endDate: upcomingMeeting.endDate)
+                                                                            .frame(height: 370) // 높이 증가
+                                                                            .padding(.vertical, 10) // 상하 여백 추가
+                                                                            .padding(.horizontal, 5) // 좌우 여백 추가
+                                                                            .background(
+                                                                                RoundedRectangle(cornerRadius: 16)
+                                                                                    .fill(Color.white)
+                                                                                    .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+                                                                            )
+                                                                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                                                                    }                                .padding(.vertical, 10)
+
+                                // 계획 섹션
+                                VStack(alignment: .leading, spacing: 10) {
+                                    HStack {
+                                        Text("계획")
+                                            .font(.headline)
+                                            .foregroundColor(.black)
+                                        
+                                        Spacer()
+                                        
+                                        Button(action: {
+                                            // 계획 편집 기능
+                                        }) {
+                                            Text("편집")
+                                                .font(.subheadline)
+                                                .foregroundColor(.blue)
+                                        }
+                                    }
+
+                                    if let memo = upcomingMeeting.memo, !memo.isEmpty {
+                                        Text(memo)
+                                            .foregroundColor(.black)
+                                            .padding()
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(Color.white)
+                                                    .shadow(color: .gray.opacity(0.1), radius: 3, x: 0, y: 1)
+                                            )
+                                    } else {
+                                        VStack(spacing: 10) {
+                                            Image(systemName: "square.and.pencil")
+                                                .font(.system(size: 32))
+                                                .foregroundColor(.gray.opacity(0.6))
+                                            
+                                            Text("아직 계획이 없습니다. 편집 버튼을 눌러 계획을 작성해보세요.")
+                                                .multilineTextAlignment(.center)
+                                                .font(.subheadline)
+                                                .foregroundColor(.gray)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(Color.white)
+                                                .shadow(color: .gray.opacity(0.1), radius: 3, x: 0, y: 1)
+                                        )
+                                    }
+
+                                    // 계획 추가 버튼
+                                    Button(action: {
+                                        // 계획 추가 기능
+                                    }) {
+                                        HStack {
+                                            Image(systemName: "plus.circle.fill")
+                                                .font(.system(size: 16))
+                                            Text("새 계획 추가")
+                                                .font(.subheadline)
+                                        }
+                                        .foregroundColor(.pink)
+                                        .padding(.vertical, 12)
+                                        .frame(maxWidth: .infinity)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.pink, lineWidth: 1)
+                                        )
+                                    }
+                                    .padding(.top, 8)
+                                }
+                                .padding(.vertical, 10)
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 30)
+                        }
+                    } else {
+                        VStack(spacing: 20) {
+                            Image(systemName: "calendar.badge.exclamationmark")
+                                .font(.system(size: 60))
+                                .foregroundColor(.pink.opacity(0.8))
+                            
+                            Text("예정된 만남이 없습니다")
+                                .font(.title2)
+                                .fontWeight(.medium)
+                                .foregroundColor(.gray)
+                            
+                            Button(action: {
+                                showingMeetingDetail = false
+                                showingMeetingSheet = true
+                            }) {
+                                HStack {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text("새 만남 추가하기")
+                                }
+                                .foregroundColor(.white)
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 20)
+                                .background(Color.pink)
+                                .cornerRadius(25)
+                            }
+                            .padding(.top, 10)
+                        }
+                    }
+                }
+                .navigationBarTitle("만남 상세정보", displayMode: .inline)
+                .navigationBarItems(trailing: Button("닫기") {
+                    showingMeetingDetail = false
+                })
+                // 네비게이션 바 스타일 수정
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("만남 상세정보")
+                            .font(.headline)
+                            .foregroundColor(.black) // 타이틀 색상을 검은색으로 변경
+                    }
+                }
             }
+            // 전체 네비게이션 바 스타일 설정
+            .navigationViewStyle(StackNavigationViewStyle())
+            .accentColor(.pink) // 액센트 색상 설정        
         }
     }
     
@@ -305,12 +577,15 @@ struct MeetingDetailView: View {
                 // 캘린더 뷰 (상태에 따라 표시/숨김)
                 if showingCalendar {
                     CalendarRangeView(startDate: meeting.startDate, endDate: meeting.endDate)
-                        .frame(height: 280)
-                        .background(Color.white)
-                        .cornerRadius(12)
+                        .frame(width: 280, height: 280)  // 정사각형 프레임
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle().stroke(Color.black, lineWidth: 2)
+                        )
                         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
                         .padding(.bottom, 10)
                 }
+
                 
                 // 남은 일수 또는 완료 표시
                 if meeting.startDate > Date() {
@@ -573,52 +848,57 @@ struct CalendarRangeView: View {
     }
     
     var body: some View {
-        VStack {
-            // 달력 헤더
-            HStack {
-                Text(formatMonthHeader())
-                    .font(.headline)
-                    .padding(.top, 8)
-            }
+        ZStack {
+            Circle()
+                .fill(Color.white)
             
-            // 요일 헤더
-            HStack {
-                let weekDays = ["일", "월", "화", "수", "목", "금", "토"]
-                ForEach(weekDays, id: \.self) { day in
-                    Text(day)
-                        .frame(maxWidth: .infinity)
-                        .font(.caption)
-                        .foregroundColor(day == "일" ? .red : (day == "토" ? .blue : .primary))
-                }
-            }
-            .padding(.vertical, 8)
-            
-            // 달력 격자
-            let firstWeekday = firstWeekdayOfMonth(calendarStartDate)
-            let daysInMonth = daysInMonth(calendarStartDate)
-            
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
-                // 이전 달의 빈 날짜
-                ForEach(0..<firstWeekday, id: \.self) { _ in
-                    Text("")
-                        .frame(height: 32)
+            VStack {
+                // 달력 헤더
+                HStack {
+                    Text(formatMonthHeader())
+                        .font(.headline)
+                        .padding(.top, 8)
                 }
                 
-                // 현재 달의 날짜들
-                ForEach(1...daysInMonth, id: \.self) { day in
-                    if let currentDay = getDateFor(day: day) {
-                        CalendarDayView(
-                            day: day,
-                            isInRange: isDateInRange(currentDay),
-                            isStartDate: isSameDay(currentDay, startDate),
-                            isEndDate: endDate != nil ? isSameDay(currentDay, endDate!) : false
-                        )
+                // 요일 헤더
+                HStack {
+                    let weekDays = ["일", "월", "화", "수", "목", "금", "토"]
+                    ForEach(weekDays, id: \.self) { day in
+                        Text(day)
+                            .frame(maxWidth: .infinity)
+                            .font(.caption)
+                            .foregroundColor(day == "일" ? .red : (day == "토" ? .blue : .primary))
                     }
                 }
+                .padding(.vertical, 8)
+                
+                // 달력 격자
+                let firstWeekday = firstWeekdayOfMonth(calendarStartDate)
+                let daysInMonth = daysInMonth(calendarStartDate)
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
+                    // 이전 달의 빈 날짜
+                    ForEach(0..<firstWeekday, id: \.self) { _ in
+                        Text("")
+                            .frame(height: 32)
+                    }
+                    
+                    // 현재 달의 날짜들
+                    ForEach(1...daysInMonth, id: \.self) { day in
+                        if let currentDay = getDateFor(day: day) {
+                            CalendarDayView(
+                                day: day,
+                                isInRange: isDateInRange(currentDay),
+                                isStartDate: isSameDay(currentDay, startDate),
+                                isEndDate: endDate != nil ? isSameDay(currentDay, endDate!) : false
+                            )
+                        }
+                    }
+                }
+                .padding(8)
             }
-            .padding(8)
+            .padding()
         }
-        .padding()
     }
 }
 
@@ -633,7 +913,7 @@ struct CalendarDayView: View {
         ZStack {
             // 배경
             if isInRange {
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: 16)
                     .fill(Color.pink.opacity(0.3))
             }
             
