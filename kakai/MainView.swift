@@ -303,17 +303,17 @@ struct MainView: View {
                                     }
                                     
                                     // 분리된 EnhancedCalendarView 사용
-                                                                        EnhancedCalendarView(startDate: upcomingMeeting.startDate, endDate: upcomingMeeting.endDate)
-                                                                            .frame(height: 370) // 높이 증가
-                                                                            .padding(.vertical, 10) // 상하 여백 추가
-                                                                            .padding(.horizontal, 5) // 좌우 여백 추가
-                                                                            .background(
-                                                                                RoundedRectangle(cornerRadius: 16)
-                                                                                    .fill(Color.white)
-                                                                                    .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
-                                                                            )
-                                                                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                                                                    }                                .padding(.vertical, 10)
+                                EnhancedCalendarView(startDate: upcomingMeeting.startDate, endDate: upcomingMeeting.endDate)
+                                    .frame(height: 370) // 높이 증가
+                                    .padding(.vertical, 10) // 상하 여백 추가
+                                    .padding(.horizontal, 5) // 좌우 여백 추가
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(Color.white)
+                                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                            }                                .padding(.vertical, 10)
 
                                 // 계획 섹션
                                 VStack(alignment: .leading, spacing: 10) {
@@ -913,26 +913,26 @@ struct CalendarDayView: View {
         ZStack {
             // 배경
             if isInRange {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.pink.opacity(0.3))
+                Circle()
+                    .fill(Color.red.opacity(0.3))
+                    .frame(width: 32, height: 32)
             }
             
             // 시작일/종료일 표시
             if isStartDate || isEndDate {
                 Circle()
-                    .fill(isStartDate ? Color.pink : Color.purple)
+                    .fill(Color.red)
                     .frame(width: 32, height: 32)
             }
             
             // 날짜 텍스트
             Text("\(day)")
-                .foregroundColor(isStartDate || isEndDate ? .white : (isInRange ? .pink : .primary))
+                .foregroundColor(isStartDate || isEndDate ? .white : (isInRange ? .red : .primary))
                 .font(.system(size: 16, weight: isStartDate || isEndDate ? .bold : .regular))
         }
         .frame(height: 32)
     }
 }
-
 struct MeetingHistoryView: View {
     @ObservedObject var relationship: RelationshipModel
     

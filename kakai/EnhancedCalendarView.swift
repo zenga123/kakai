@@ -74,6 +74,12 @@ struct EnhancedCalendarView: View {
         return calendar.compare(date1, to: date2, toGranularity: .day) == .orderedSame
     }
     
+    // 오늘 날짜인지 확인
+    private func isToday(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDateInToday(date)
+    }
+    
     var body: some View {
         VStack {
             // 달력 헤더
@@ -111,28 +117,23 @@ struct EnhancedCalendarView: View {
                 ForEach(1...daysInMonth, id: \.self) { day in
                     if let currentDay = getDateFor(day: day) {
                         ZStack {
-                            // 배경
-                            if isDateInRange(currentDay) {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.pink.opacity(0.3))
+                        // 오늘 날짜 표시
+                            if isToday(currentDay) && !isDateInRange(currentDay) {
+                                Circle()
+                                    .stroke(Color.blue, lineWidth: 2)
                                     .frame(width: 36, height: 36)
                             }
-                            
-                            // 시작일/종료일 표시
-                            if isSameDay(currentDay, startDate) || (endDate != nil && isSameDay(currentDay, endDate!)) {
+                            // 배경
+                            if isDateInRange(currentDay) {
                                 Circle()
-                                    .fill(isSameDay(currentDay, startDate) ? Color.pink : Color.purple)
-                                    .frame(width: 34, height: 34)
+                                    .fill(Color.red)
+                                    .frame(width: 36, height: 36)
                             }
                             
                             // 날짜 텍스트
                             Text("\(day)")
-                                .foregroundColor(
-                                    isSameDay(currentDay, startDate) || (endDate != nil && isSameDay(currentDay, endDate!))
-                                    ? .white
-                                    : (isDateInRange(currentDay) ? .pink : .black)
-                                )
-                                .font(.system(size: 16, weight: isSameDay(currentDay, startDate) || (endDate != nil && isSameDay(currentDay, endDate!)) ? .bold : .regular))
+                                .foregroundColor(isDateInRange(currentDay) ? .white : .black)
+                                .font(.system(size: 16, weight: isDateInRange(currentDay) ? .bold : .regular))
                         }
                         .frame(height: 36)
                     }
