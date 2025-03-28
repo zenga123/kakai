@@ -25,9 +25,9 @@
 - **PhotosUI**  
   - 写真選択機能の実装
 
-<div align="center">
 
 ## 機能
+<div align="center">
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
   <img src="https://github.com/user-attachments/assets/6a935885-864a-40e2-8862-0a033f4657fe" width="200" style="margin: 10px;" />
