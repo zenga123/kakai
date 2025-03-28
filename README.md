@@ -1,6 +1,6 @@
 <div align="center">
 
-# かかい
+# KAKAI
 
 ![가까이 앱 이미지 일본어](https://github.com/user-attachments/assets/3088b70d-1799-42e7-9a1e-202af9d6330e)
 
